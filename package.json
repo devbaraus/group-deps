@@ -6,9 +6,6 @@
   "bin": {
     "deps": "./bin/deps.ts"
   },
-  "cronDependencies": {
-    "sharp": "^0.32.1"
-  },
   "peerDependencies": {
     "typescript": "^5"
   }
