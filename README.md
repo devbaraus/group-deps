@@ -57,7 +57,9 @@ You can reference versions from other dependency sections instead of duplicating
 
 When you reference a package like `"react": "dependencies:react"`, the tool will resolve the actual version from the `dependencies` section.
 
-## Usage
+## Commands
+
+### install
 
 Install specific dependency groups from your `package.json`:
 
@@ -65,10 +67,36 @@ Install specific dependency groups from your `package.json`:
 deps install <group> [--pm <package-manager>]
 ```
 
-### Parameters
+**Parameters:**
 
 - `<group>`: The dependency group to install (`deps` for dependencies, `dev` for devDependencies, or any custom group suffix like `cron` for cronDependencies)
 - `--pm`: Package manager to use (`bun`, `npm`, `pnpm`, `yarn`). Defaults to `bun`
+
+### add
+
+Add packages to a dependency group:
+
+```bash
+deps add <group> <package> [<package>...]
+```
+
+**Parameters:**
+
+- `<group>`: The dependency group to add to
+- `<package>`: Package specification (e.g., `react`, `react@^18.0.0`, `@types/node@latest`)
+
+### remove
+
+Remove packages from a dependency group:
+
+```bash
+deps remove <group> <package> [<package>...]
+```
+
+**Parameters:**
+
+- `<group>`: The dependency group to remove from
+- `<package>`: Package name(s) to remove
 
 ## Examples
 
@@ -88,4 +116,19 @@ Install custom group dependencies using pnpm:
 
 ```bash
 deps install cron --pm pnpm
+```
+
+Add packages to a group:
+
+```bash
+deps add deps react@^18.0.0
+deps add dev typescript @types/node
+deps add cron croner@^10.0.1
+```
+
+Remove packages from a group:
+
+```bash
+deps remove deps react
+deps remove dev @types/node
 ```
