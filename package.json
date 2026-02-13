@@ -6,6 +6,7 @@
   "bin": {
     "deps": "./bin/deps.ts"
   },
+  "license": "MIT",
   "peerDependencies": {
     "typescript": "^5"
   }
