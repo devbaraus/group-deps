@@ -1,6 +1,6 @@
 {
   "name": "group-deps",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A tool to group dependencies in a package.json file.",
   "type": "module",
   "bin": {
