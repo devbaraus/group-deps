@@ -1,0 +1,15 @@
+{
+  "name": "group-deps",
+  "version": "0.1.0",
+  "description": "A tool to group dependencies in a package.json file.",
+  "type": "module",
+  "bin": {
+    "deps": "./bin/deps.js"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
