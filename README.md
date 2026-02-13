@@ -16,6 +16,8 @@ bunx jsr add @zerun/group-deps
 
 ## Setup
 
+### Custom Dependency Groups
+
 Add custom dependency groups to your `package.json`:
 
 ```json
@@ -24,10 +26,6 @@ Add custom dependency groups to your `package.json`:
     "react": "^18.0.0",
     "dotenv": "^16.0.0"
   },
-Install using a custom package.json:
-```bash
-deps install cron --pkg ./apps/foo/package.json
-```
   "devDependencies": {
     "typescript": "^5.0.0",
     "@biomejs/biome": "^1.0.0"
@@ -61,6 +59,14 @@ You can reference versions from other dependency sections instead of duplicating
 
 When you reference a package like `"react": "dependencies:react"`, the tool will resolve the actual version from the `dependencies` section.
 
+### Custom Package.json
+
+If you have a monorepo or want to manage dependencies in a specific package, you can specify a custom `package.json` path:
+
+```bash
+deps install cron --pkg ./apps/foo/package.json
+```
+
 ## Commands
 
 ### install
@@ -72,6 +78,7 @@ deps install <group> [--pm <package-manager>] [--pkg <path>]
 ```
 
 **Parameters:**
+
 - `<group>`: The dependency group to install (`deps` for dependencies, `dev` for devDependencies, or any custom group suffix like `cron` for cronDependencies)
 - `--pm`: Package manager to use (`bun`, `npm`, `pnpm`, `yarn`). Defaults to `bun`
 - `--pkg`: Path to a custom package.json (defaults to `./package.json`)
@@ -85,6 +92,7 @@ deps add <group> <package> [<package>...] [--pkg <path>]
 ```
 
 **Parameters:**
+
 - `<group>`: The dependency group to add to
 - `<package>`: Package specification (e.g., `react`, `react@^18.0.0`, `@types/node@latest`)
 - `--pkg`: Path to a custom package.json (defaults to `./package.json`)
@@ -98,6 +106,7 @@ deps remove <group> <package> [<package>...] [--pkg <path>]
 ```
 
 **Parameters:**
+
 - `<group>`: The dependency group to remove from
 - `<package>`: Package name(s) to remove
 - `--pkg`: Path to a custom package.json (defaults to `./package.json`)
