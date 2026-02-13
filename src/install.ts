@@ -1,12 +1,17 @@
 import { execSync } from "child_process";
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "fs";
+import { readFileSync } from "fs";
 import { resolve } from "path";
-import { tmpdir } from "os";
 import { getPmCommand } from "./pm";
 
-export async function installGroup(group: string, pm = "bun") {
-  const pkgPath = resolve(process.cwd(), "package.json");
-  const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
+export async function installGroup(
+  group: string,
+  pm = "bun",
+  pkgPath?: string
+) {
+  const resolvedPkgPath = pkgPath
+    ? resolve(process.cwd(), pkgPath)
+    : resolve(process.cwd(), "package.json");
+  const pkg = JSON.parse(readFileSync(resolvedPkgPath, "utf8"));
 
   const sectionName =
     group === "deps"
@@ -49,26 +54,10 @@ export async function installGroup(group: string, pm = "bun") {
     return `${name}@${version}`;
   }).filter(Boolean) as string[];
 
-  if (packages.length === 0) {
-    console.warn(`⚠️ No installable dependencies found in "${sectionName}"`);
-    return;
-  }
-
-  const tempDir = mkdtempSync(resolve(tmpdir(), "group-deps-"));
-  const tempPkgPath = resolve(tempDir, "package.json");
-  writeFileSync(
-    tempPkgPath,
-    JSON.stringify({ name: "group-deps-temp", private: true }, null, 2) + "\n"
-  );
-
   const cmd = getPmCommand(pm, packages);
 
-  console.log(`📦 Installing ${sectionName} using ${pm} (isolated)`);
+  console.log(`📦 Installing ${sectionName} using ${pm}`);
   console.log(`> ${cmd}`);
 
-  try {
-    execSync(cmd, { stdio: "inherit", cwd: tempDir });
-  } finally {
-    rmSync(tempDir, { recursive: true, force: true });
-  }
+  execSync(cmd, { stdio: "inherit" });
 }

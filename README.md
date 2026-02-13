@@ -24,6 +24,10 @@ Add custom dependency groups to your `package.json`:
     "react": "^18.0.0",
     "dotenv": "^16.0.0"
   },
+Install using a custom package.json:
+```bash
+deps install cron --pkg ./apps/foo/package.json
+```
   "devDependencies": {
     "typescript": "^5.0.0",
     "@biomejs/biome": "^1.0.0"
@@ -64,39 +68,39 @@ When you reference a package like `"react": "dependencies:react"`, the tool will
 Install specific dependency groups from your `package.json`:
 
 ```bash
-deps install <group> [--pm <package-manager>]
+deps install <group> [--pm <package-manager>] [--pkg <path>]
 ```
 
 **Parameters:**
-
 - `<group>`: The dependency group to install (`deps` for dependencies, `dev` for devDependencies, or any custom group suffix like `cron` for cronDependencies)
 - `--pm`: Package manager to use (`bun`, `npm`, `pnpm`, `yarn`). Defaults to `bun`
+- `--pkg`: Path to a custom package.json (defaults to `./package.json`)
 
 ### add
 
 Add packages to a dependency group:
 
 ```bash
-deps add <group> <package> [<package>...]
+deps add <group> <package> [<package>...] [--pkg <path>]
 ```
 
 **Parameters:**
-
 - `<group>`: The dependency group to add to
 - `<package>`: Package specification (e.g., `react`, `react@^18.0.0`, `@types/node@latest`)
+- `--pkg`: Path to a custom package.json (defaults to `./package.json`)
 
 ### remove
 
 Remove packages from a dependency group:
 
 ```bash
-deps remove <group> <package> [<package>...]
+deps remove <group> <package> [<package>...] [--pkg <path>]
 ```
 
 **Parameters:**
-
 - `<group>`: The dependency group to remove from
 - `<package>`: Package name(s) to remove
+- `--pkg`: Path to a custom package.json (defaults to `./package.json`)
 
 ## Examples
 
@@ -116,6 +120,12 @@ Install custom group dependencies using pnpm:
 
 ```bash
 deps install cron --pm pnpm
+```
+
+Install using a custom package.json:
+
+```bash
+deps install cron --pkg ./apps/foo/package.json
 ```
 
 Add packages to a group:

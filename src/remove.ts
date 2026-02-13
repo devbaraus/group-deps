@@ -3,10 +3,13 @@ import { resolve } from "path";
 
 export async function removeFromGroup(
   group: string,
-  packages: string[]
+  packages: string[],
+  pkgPath?: string
 ) {
-  const pkgPath = resolve(process.cwd(), "package.json");
-  const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
+  const resolvedPkgPath = pkgPath
+    ? resolve(process.cwd(), pkgPath)
+    : resolve(process.cwd(), "package.json");
+  const pkg = JSON.parse(readFileSync(resolvedPkgPath, "utf8"));
 
   const sectionName =
     group === "deps"
@@ -29,6 +32,6 @@ export async function removeFromGroup(
     }
   }
 
-  writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + "\n");
+  writeFileSync(resolvedPkgPath, JSON.stringify(pkg, null, 2) + "\n");
   console.log(`📝 Updated package.json`);
 }
