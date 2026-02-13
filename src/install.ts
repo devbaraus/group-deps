@@ -1,12 +1,10 @@
 import { readFileSync } from "fs";
-import { execSync } from "child_process";
 import { resolve } from "path";
-import { getPmCommand } from "./pm.js";
+import { execSync } from "child_process";
+import { getPmCommand } from "./pm";
 
-export function installGroup(group, options = {}) {
-  const pm = options.pm || "npm";
+export async function installGroup(group: string, pm = "bun") {
   const pkgPath = resolve(process.cwd(), "package.json");
-
   const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
 
   const sectionName =

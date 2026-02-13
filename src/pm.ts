@@ -1,4 +1,4 @@
-export function getPmCommand(pm, packages) {
+export function getPmCommand(pm: string, packages: string[]): string {
   const list = packages.join(" ");
 
   switch (pm) {

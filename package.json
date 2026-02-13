@@ -4,10 +4,10 @@
   "description": "A tool to group dependencies in a package.json file.",
   "type": "module",
   "bin": {
-    "deps": "./bin/deps.js"
+    "deps": "./bin/deps.ts"
   },
-  "devDependencies": {
-    "@types/bun": "latest"
+  "cronDependencies": {
+    "sharp": "^0.32.1"
   },
   "peerDependencies": {
     "typescript": "^5"

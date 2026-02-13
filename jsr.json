@@ -1,0 +1,6 @@
+{
+  "name": "@zerun/group-deps",
+  "version": "0.1.0",
+  "license": "MIT",
+  "exports": "./bin/deps.ts"
+}

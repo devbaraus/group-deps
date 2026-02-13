@@ -1,5 +1,5 @@
-#!/usr/bin/env node
-import { installGroup } from "../src/install.js";
+#!/usr/bin/env bun
+import { installGroup } from "../src/install";
 
 const args = process.argv.slice(2);
 
@@ -10,7 +10,7 @@ if (args[0] !== "install") {
 
 const group = args[1];
 
-let pm = "npm";
+let pm = "bun";
 
 const pmIndex = args.indexOf("--pm");
 if (pmIndex !== -1) {
@@ -22,4 +22,4 @@ if (!group) {
   process.exit(1);
 }
 
-installGroup(group, { pm });
+await installGroup(group, pm);
