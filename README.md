@@ -1,6 +1,6 @@
 # Group Deps
 
-A tool to group dependencies in a `package.json` file.
+Selectively install dependency groups from your `package.json`. Perfect for monorepos and projects with custom dependency categories where you only need to install specific groups without installing everything.
 
 ## Installation
 
@@ -16,15 +16,17 @@ bunx jsr add @zerun/group-deps
 
 ## Setup
 
-Add a custom group to your `package.json` like this:
+Add custom dependency groups to your `package.json`:
 
 ```json
 {
   "dependencies": {
-    "react": "^18.0.0"
+    "react": "^18.0.0",
+    "dotenv": "^16.0.0"
   },
   "devDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "@biomejs/biome": "^1.0.0"
   },
   "cronDependencies": {
     "croner": "^10.0.1"
@@ -32,34 +34,57 @@ Add a custom group to your `package.json` like this:
 }
 ```
 
+### Referenced Packages
+
+You can reference versions from other dependency sections instead of duplicating version numbers:
+
+```json
+{
+  "dependencies": {
+    "react": "^18.0.0",
+    "dotenv": "^16.0.0"
+  },
+  "buildDependencies": {
+    "croner": "^10.0.1",
+    "dotenv": "dependencies:dotenv",
+    "biome": "devDependencies:@biomejs/biome"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.15"
+  }
+}
+```
+
+When you reference a package like `"react": "dependencies:react"`, the tool will resolve the actual version from the `dependencies` section.
+
 ## Usage
 
-To use the tool, run:
+Install specific dependency groups from your `package.json`:
 
 ```bash
-deps install <group> --pm <bun|npm|pnpm|yarn>
+deps install <group> [--pm <package-manager>]
 ```
 
 ### Parameters
 
-- `<group>`: The group of dependencies to install. This can be `deps`, `dev`, or any custom group defined in your `package.json`.
-- `--pm`: The package manager to use. Options include `bun`, `npm`, `pnpm`, or `yarn`. The default is `bun`.
+- `<group>`: The dependency group to install (`deps` for dependencies, `dev` for devDependencies, or any custom group suffix like `cron` for cronDependencies)
+- `--pm`: Package manager to use (`bun`, `npm`, `pnpm`, `yarn`). Defaults to `bun`
 
-## Example
+## Examples
 
-To install the dependencies defined in the `dependencies` section of your `package.json`, run:
+Install standard dependencies:
 
 ```bash
 deps install deps
 ```
 
-To install development dependencies, run:
+Install dev dependencies with npm:
 
 ```bash
 deps install dev --pm npm
 ```
 
-To install custom group dependencies, run:
+Install custom group dependencies using pnpm:
 
 ```bash
 deps install cron --pm pnpm
