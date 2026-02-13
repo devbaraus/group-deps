@@ -1,8 +1,8 @@
 import { execSync } from "child_process";
-import { readFileSync } from "fs";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "fs";
 import { resolve } from "path";
+import { tmpdir } from "os";
 import { getPmCommand } from "./pm";
-import { ref } from "process";
 
 export async function installGroup(group: string, pm = "bun") {
   const pkgPath = resolve(process.cwd(), "package.json");
@@ -49,10 +49,26 @@ export async function installGroup(group: string, pm = "bun") {
     return `${name}@${version}`;
   }).filter(Boolean) as string[];
 
+  if (packages.length === 0) {
+    console.warn(`⚠️ No installable dependencies found in "${sectionName}"`);
+    return;
+  }
+
+  const tempDir = mkdtempSync(resolve(tmpdir(), "group-deps-"));
+  const tempPkgPath = resolve(tempDir, "package.json");
+  writeFileSync(
+    tempPkgPath,
+    JSON.stringify({ name: "group-deps-temp", private: true }, null, 2) + "\n"
+  );
+
   const cmd = getPmCommand(pm, packages);
 
-  console.log(`📦 Installing ${sectionName} using ${pm}`);
+  console.log(`📦 Installing ${sectionName} using ${pm} (isolated)`);
   console.log(`> ${cmd}`);
 
-  execSync(cmd, { stdio: "inherit" });
+  try {
+    execSync(cmd, { stdio: "inherit", cwd: tempDir });
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
 }
